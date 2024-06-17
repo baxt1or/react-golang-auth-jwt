@@ -1,7 +1,6 @@
 import { AuthForm } from "@/components/AuthForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,26 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
-const registerSchema = z.object({
-  firstname: z.string().min(2, {
-    message: "First name must be at least 2 characters.",
-  }),
-  lastname: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
-
-type RegisterSchema = z.infer<typeof registerSchema>;
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { RegisterSchema, registerSchema } from "@/types/schemas";
 
 export const Register = () => {
   const form = useForm<RegisterSchema>({
@@ -47,7 +29,7 @@ export const Register = () => {
   });
 
   const router = useNavigate();
-  const { mutate: registerUser } = useMutation({
+  const { mutate: registerUser, isPending } = useMutation({
     mutationKey: ["registerUser"],
     mutationFn: async (values: RegisterSchema) => {
       const res = await fetch("http://localhost:8080/api/register", {
@@ -69,7 +51,7 @@ export const Register = () => {
       router("/login");
     },
     onError: (error: any) => {
-      alert(error.message);
+      toast(error.message);
     },
   });
 
@@ -80,7 +62,7 @@ export const Register = () => {
   return (
     <>
       <AuthForm
-        label="Welcome to Golang"
+        label="Join us Today"
         message="Already have account?"
         messageBack="Sign In"
         messageLinkBack="/login"
@@ -89,6 +71,7 @@ export const Register = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex gap-2">
               <FormField
+                disabled={isPending}
                 control={form.control}
                 name="firstname"
                 render={({ field }) => (
@@ -102,6 +85,7 @@ export const Register = () => {
                 )}
               />
               <FormField
+                disabled={isPending}
                 control={form.control}
                 name="lastname"
                 render={({ field }) => (
@@ -117,6 +101,7 @@ export const Register = () => {
             </div>
 
             <FormField
+              disabled={isPending}
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -131,6 +116,7 @@ export const Register = () => {
             />
 
             <FormField
+              disabled={isPending}
               control={form.control}
               name="password"
               render={({ field }) => (
@@ -138,13 +124,13 @@ export const Register = () => {
                   <FormControl>
                     <Input placeholder="*******" {...field} />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             <FormField
+              disabled={isPending}
               control={form.control}
               name="username"
               render={({ field }) => (
@@ -157,8 +143,12 @@ export const Register = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-1" />
+              ) : (
+                "Sing Up"
+              )}
             </Button>
           </form>
         </Form>

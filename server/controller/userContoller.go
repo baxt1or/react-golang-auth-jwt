@@ -66,6 +66,7 @@ func Login(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"user": result})
 }
 
+
 func GetUser(c *gin.Context){
     cookie, err := c.Cookie("jwt")
 
@@ -105,7 +106,6 @@ func GetUser(c *gin.Context){
     c.JSON(http.StatusOK, result)
 
 }
-
 
 func Logout(c *gin.Context){
     c.SetCookie("jwt", "", -1, "", "", false, true)

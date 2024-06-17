@@ -52,7 +52,6 @@ func (user *User) GetByEmail() error {
 }
 
 
-
 func (user *User) GetByID() error {
 	stmt, err := db.Client.Prepare(queryGetById)
 	if err != nil {
