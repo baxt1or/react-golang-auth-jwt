@@ -43,54 +43,50 @@ const Home = ({ user }: { user: User }) => {
     return <h1>No blogs there</h1>;
   }
   return (
-    <>
-      <Navbar user={user} />
-
-      <div className="min-h-screen max-w-7xl mx-auto">
-        <div className="md:flex pt-16">
-          <div className="h-screen  md:w-3/4 md:border-r">
-            {user ? (
-              <div className="px-6">
-                <div className="border-b">
-                  <h1 className="text-sm font-bold text-black pt-4 pb-2 px-3">
-                    Home
-                  </h1>
-                </div>
-
-                {data.map((blog) => (
-                  <BlogCard key={blog.ID} blog={blog} />
-                ))}
+    <div className="min-h-screen max-w-7xl mx-auto">
+      <div className="md:flex pt-16">
+        <div className="h-screen  md:w-3/4 md:border-r">
+          {user ? (
+            <div className="px-6">
+              <div className="border-b">
+                <h1 className="text-sm font-bold text-black pt-4 pb-2 px-3">
+                  Home
+                </h1>
               </div>
-            ) : (
-              <div className="flex flex-col gap-y-4 items-center">
-                <p className="text-4xl font-extrabold text-center">
-                  Welcome to Pearson Hardman
-                </p>
-                <Link
-                  to={"/login"}
-                  className={buttonVariants({ variant: "secondary" })}
-                >
-                  Login
-                </Link>
-              </div>
-            )}
-          </div>
 
-          <div className="hidden md:block h-screen w-3/12 ">
-            <div className="py-4 px-6">
-              <Categories />
+              {data.map((blog) => (
+                <BlogCard key={blog.ID} blog={blog} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-y-4 items-center">
+              <p className="text-4xl font-extrabold text-center">
+                Welcome to Pearson Hardman
+              </p>
+              <Link
+                to={"/login"}
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Login
+              </Link>
+            </div>
+          )}
+        </div>
 
-              <div className="pt-12">
-                <h1 className="text-sm font-bold text-black ">Tending</h1>
-                {data.map((blog) => (
-                  <TrendingCard key={blog.ID} blog={blog} />
-                ))}
-              </div>
+        <div className="hidden md:block h-screen w-3/12 ">
+          <div className="py-4 px-6">
+            <Categories />
+
+            <div className="pt-12">
+              <h1 className="text-sm font-bold text-black ">Tending</h1>
+              {data.map((blog) => (
+                <TrendingCard key={blog.ID} blog={blog} />
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

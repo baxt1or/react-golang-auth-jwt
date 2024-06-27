@@ -3,19 +3,17 @@ import { Link } from "react-router-dom";
 import { Button, buttonVariants } from "./ui/button";
 import { Input } from "./ui/input";
 import { User } from "@/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { UserMenuBar } from "./UserMenuBar";
 
 export const Navbar = ({ user }: { user: User }) => {
-  const handleLogout = async (e: SyntheticEvent) => {
-    e.preventDefault();
-
-    await fetch("http://localhost:8080/api/logout", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
   return (
     <header className="fixed top-0 right-0 left-0  bg-white border-b px-12 py-2.5">
       <nav className="flex items-center justify-between">
@@ -39,10 +37,7 @@ export const Navbar = ({ user }: { user: User }) => {
                 Write
               </Link>
 
-              <Button onClick={handleLogout} className="rounded-3xl">
-                Logout
-              </Button>
-              <p className="text-sm font-bold text-black">{user.username}</p>
+              <UserMenuBar />
             </div>
           </>
         ) : (

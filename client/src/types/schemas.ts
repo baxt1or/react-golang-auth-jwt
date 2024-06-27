@@ -38,6 +38,18 @@ export const blogSchema = z.object({
   content: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
+  sub_title: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+  category: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+  status: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+  location: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
 });
 
 export type BlogSchema = z.infer<typeof blogSchema>;

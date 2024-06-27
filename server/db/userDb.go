@@ -13,7 +13,7 @@ var (
 
 func init() {
     var err error
-    Client, err = sql.Open("mysql", "root:ayubkot123@tcp(localhost:3306)/hellodb")
+    Client, err = sql.Open("mysql", "root:ayubkot123@tcp(localhost:3306)/smalltribe")
     if err != nil {
         fmt.Printf("Error opening database: %v\n", err)
         return

@@ -17,6 +17,10 @@ import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { BlogSchema, blogSchema } from "@/types/schemas";
 import axios from "axios";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
 
 export const WriteBlog = () => {
   const form = useForm<BlogSchema>({
@@ -24,6 +28,10 @@ export const WriteBlog = () => {
     defaultValues: {
       title: "",
       content: "",
+      sub_title: "",
+      category: "",
+      status: "",
+      location: "",
     },
   });
 
@@ -62,33 +70,10 @@ export const WriteBlog = () => {
     createBlog(values);
   };
 
+  const editor = useCreateBlockNote();
+
   return (
     <div className="min-h-screen max-w-7xl mx-auto ">
-      <header className="fixed top-0 right-0 left-0  bg-white border-b px-12 py-2.5">
-        <nav className="flex items-center justify-between">
-          <div className="flex gap-8">
-            <Link to="/" className="text-sm font-bold text-black">
-              <img src="/logo.png" alt="logo" className="w-8 h-8" />
-            </Link>
-            <Input
-              placeholder="Search a blog"
-              className="bg-gray-100 rounded-3xl outline-none border-none w-72"
-            />
-          </div>
-
-          <div className="flex gap-4 items-center">
-            <Link
-              to="/write-blog"
-              className={buttonVariants({ variant: "secondary" })}
-            >
-              Write
-            </Link>
-
-            <p className="text-sm font-bold text-black">baxtior</p>
-          </div>
-        </nav>
-      </header>
-
       <div className="flex flex-col gap-y-4 mt-24">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -107,7 +92,6 @@ export const WriteBlog = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               disabled={isPending}
               control={form.control}
@@ -127,7 +111,68 @@ export const WriteBlog = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              disabled={isPending}
+              control={form.control}
+              name="sub_title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subtite</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Grab the attention" {...field} />
+                  </FormControl>
 
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              disabled={isPending}
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Grab the attention" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              disabled={isPending}
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Status</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Grab the attention" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              disabled={isPending}
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Grab the attention" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? (
                 <>

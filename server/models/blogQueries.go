@@ -6,58 +6,65 @@ import (
 	"github/baxt1or/auth-jwt/db"
 )
 
-var (
-	queryInsertBlog = "INSERT INTO blogs (title, content, user_id) VALUES (?, ?, ?);"
-    queryGetBlogs = "SELECT id, title, content, user_id FROM blogs"
-    queryGetBlogById = "SELECT id, title, content, user_id FROM blogs WHERE id=?;"
+const (
+	  queryInsertBlog = "INSERT INTO blogs (title, content, user_id, subtitle, category, status, location) VALUES (?, ?, ?, ?, ?, ?, ? );"
+    queryGetBlogs = "SELECT id, title, content, user_id, subtitle, category, status, location FROM blogs;"
+    queryGetBlogById = "SELECT id, title, content, user_id, subtitle, category, status, location FROM blogs WHERE id = ?;"
     queryDeleteBlogById = "DELETE FROM blogs WHERE id=?;"
-    queryUpdateBlogById = "UPDATE blogs SET title=?, content=? WHERE id=?;"
-    
+    queryUpdateBlogById = "UPDATE blogs SET title=?, content=?, subtitle=?, category=?, status=?,  location=? WHERE id=?;"
 )
 
 
 func (blog *Blog) Save() error {
+	
+	
+
 	stm, err := db.Client.Prepare(queryInsertBlog)
 	if err != nil {
-		return errors.New("Database error!")
+		return fmt.Errorf("failed to prepare query: %w", err)
 	}
 	defer stm.Close()
 
-	_, err = stm.Exec(blog.Title, blog.Content, blog.UserID)
+	_, err = stm.Exec(blog.Title, blog.Content, blog.UserID, blog.Subtitle, blog.Category, blog.Status, blog.Location)
 	if err != nil {
-		return errors.New("Failed to execute query")
+		return fmt.Errorf("failed to execute query: %w", err)
 	}
 
 	return nil
 }
 
 func (blog *Blog) Blogs() ([]Blog, error) {
-    stm, err := db.Client.Prepare(queryGetBlogs)
-    if err != nil {
-        return nil, errors.New("Database error!")
-    }
-    defer stm.Close()
 
-    rows, err := stm.Query()
-    if err != nil {
-        return nil, err
-    }
-    defer rows.Close()
+  stm, err := db.Client.Prepare(queryGetBlogs)
+  if err != nil {
+      return nil, fmt.Errorf("failed to prepare query: %w", err)
+  }
+  defer stm.Close()
 
-    blogs := []Blog{}
-    for rows.Next() {
-        var b Blog
-        if err := rows.Scan(&b.ID, &b.Title, &b.Content, &b.UserID); err != nil {
-            return nil, err
-        }
-        blogs = append(blogs, b)
-    }
+  rows, err := stm.Query()
+  if err != nil {
+      return nil, fmt.Errorf("failed to execute query: %w", err)
+  }
+  defer rows.Close()
 
-    if err := rows.Err(); err != nil {
-        return nil, err
-    }
+  blogs := []Blog{}
+  for rows.Next() {
+      var b Blog
 
-    return blogs, nil
+      if err := rows.Scan(&b.ID, &b.Title, &b.Content, &b.UserID, &b.Subtitle, &b.Category, &b.Status, &b.Location); err != nil {
+          return nil, fmt.Errorf("failed to scan row: %w", err)
+      }
+
+      
+
+      blogs = append(blogs, b)
+  }
+
+  if err := rows.Err(); err != nil {
+      return nil, fmt.Errorf("error iterating over rows: %w", err)
+  }
+
+  return blogs, nil
 }
 
 func (blog *Blog) GetBlogByID() error {
@@ -69,7 +76,7 @@ func (blog *Blog) GetBlogByID() error {
     defer stm.Close()
 
     result :=  stm.QueryRow(blog.ID)
-    if err := result.Scan(&blog.ID, &blog.Title, &blog.Content, &blog.UserID); err != nil {
+    if err := result.Scan(&blog.ID, &blog.Title, &blog.Content, &blog.UserID, &blog.Subtitle, &blog.Category,  &blog.Status, &blog.Location); err != nil {
         return errors.New("Database error")
     }
     return nil
@@ -108,7 +115,7 @@ func (blog *Blog) UpdateBlogById() error {
 
     defer stm.Close()
 
-    result, err := stm.Exec(&blog.ID, &blog.Title, &blog.Content, &blog.UserID)
+    result, err := stm.Exec(&blog.ID, &blog.Title, &blog.Content, &blog.UserID, &blog.Subtitle, &blog.Category,  &blog.Status, &blog.Location)
     if err != nil {
         return fmt.Errorf("failed to execute delete statement: %w", err)
       }

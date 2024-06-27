@@ -66,7 +66,6 @@ func Login(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"user": result})
 }
 
-
 func GetUser(c *gin.Context){
     cookie, err := c.Cookie("jwt")
 
@@ -102,6 +101,7 @@ func GetUser(c *gin.Context){
         c.JSON(http.StatusInternalServerError, gin.H{"error": "User retrieval error: " + err.Error()})
         return
     }
+   
 
     c.JSON(http.StatusOK, result)
 

@@ -3,6 +3,10 @@ export type Blog = {
   title: string;
   content: string;
   user_id: number;
+  sub_title: string;
+  category: string;
+  status: string;
+  location: string;
 };
 
 export type User = {
@@ -12,5 +16,6 @@ export type User = {
   email: string;
   password: string;
   username: string;
-  blogs: null;
+  bio: string;
+  blogs: Blog[];
 };

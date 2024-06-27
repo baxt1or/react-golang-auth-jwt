@@ -12,21 +12,17 @@ type User struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 	Username  string `json:"username"`
+	Bio       string `json:"bio"`
 	Blog      []Blog `json:"blogs"`
 }
 
-type Blog struct {
-	ID int64        `json: "ID"`
-	Title string    `json:"title"`
-	Content string  `json:"content"`
-	UserID int64    `json:"user_id"`
-}
+
 
 func (user *User) Validate() error {
 	user.FirstName = strings.TrimSpace(user.FirstName)
 	user.LastName = strings.TrimSpace(user.LastName)
 	user.Email = strings.TrimSpace(user.Email)
-
+	
 	if user.Email == ""{
 		return errors.New("Invalid Email")
 	}
@@ -37,6 +33,7 @@ func (user *User) Validate() error {
 		return errors.New("Invalid Password")
 	}
 	user.Username = strings.TrimSpace(user.Username)
+	user.Bio = strings.TrimSpace(user.Bio)
 
 	return nil
 }

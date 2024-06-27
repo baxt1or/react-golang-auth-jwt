@@ -3,7 +3,12 @@ import { Button } from "./ui/button";
 import { Heart } from "lucide-react";
 import { Blog } from "@/types";
 
-export const BlogCard = ({ blog }: { blog: Blog }) => {
+type Props = {
+  blog: Blog;
+  username?: string;
+};
+
+export const BlogCard = ({ blog, username }: Props) => {
   return (
     <Link
       to={`/blog/${blog.ID}`}
@@ -11,7 +16,7 @@ export const BlogCard = ({ blog }: { blog: Blog }) => {
     >
       <div className="flex flex-col gap-y-8">
         <p className="text-sm text-black font-bold">
-          baxtior @ september, 2024
+          @{username} | september, 2024
         </p>
         <div>
           <h1 className="text-lg text-black font-medium">{blog.title}</h1>
@@ -21,7 +26,7 @@ export const BlogCard = ({ blog }: { blog: Blog }) => {
         </div>
         <div className="flex gap-4 items-center">
           <Button size="sm" className="rounded-3xl">
-            Travel
+            {blog.category}
           </Button>
           <Heart className="w-5 h-5 text-gray-400 " />
         </div>

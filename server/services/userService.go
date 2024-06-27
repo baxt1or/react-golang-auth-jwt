@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github/baxt1or/auth-jwt/models"
 
 	"golang.org/x/crypto/bcrypt"
@@ -37,7 +38,7 @@ func GetUser(user models.User) (*models.User, error){
         return nil, err
     }
 
-    resultWithoutPsw := &models.User{ID: result.ID, FirstName: result.FirstName, LastName: result.LastName, Email: result.Email, Username: result.Username}
+    resultWithoutPsw := &models.User{ID: result.ID, FirstName: result.FirstName, LastName: result.LastName, Email: result.Email, Username: result.Username, Bio: result.Bio}
     return resultWithoutPsw, nil
 }
 
@@ -47,6 +48,9 @@ func GetUserById(userId int64) (*models.User, error){
     if err := result.GetByID(); err != nil{
         return nil, err
     }
+    fmt.Println(result.GetByID())
 
     return result, nil
 }
+
+

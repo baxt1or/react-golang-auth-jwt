@@ -8,6 +8,9 @@ import { User } from "./types";
 import { Loading } from "./components/Loading";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { UserPage } from "./pages/UserPage";
+import { Dashboard } from "./pages/Dashboard";
+import { Navbar } from "./components/Navbar";
 
 const fetchUser = async () => {
   try {
@@ -26,7 +29,7 @@ const fetchUser = async () => {
 
 function App() {
   const { data, error, isLoading } = useQuery<User | null>({
-    queryKey: ["user"],
+    queryKey: ["user", "blogs"],
     queryFn: fetchUser,
   });
 
@@ -44,12 +47,16 @@ function App() {
 
   return (
     <>
+      <Navbar user={data} />
       <main className="max-w-7xl mx-auto px-6">
         <Routes>
           <Route path="/" element={<Home user={data} />} />
+          <Route path="/user" element={<UserPage user={data} />} />
 
           <Route path="/write-blog" element={<WriteBlog />} />
           <Route path="/blog/:id" element={<BlogPage />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

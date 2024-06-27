@@ -6,9 +6,18 @@ import (
 
 
 func AddBlog(blog models.Blog) (*models.Blog, error) {
+	
+	if err := blog.ValidateCategory(); err != nil{
+		return nil, err
+	}
+	if err := blog.ValidateStatus(); err != nil{
+		return nil, err
+	}
+
 	if err := blog.Save(); err != nil {
 		return nil, err
 	}
+	
 	return &blog, nil
 }
 
